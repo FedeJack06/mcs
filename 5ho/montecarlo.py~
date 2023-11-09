@@ -1,0 +1,15 @@
+import ROOT
+import math
+
+rnd = TRandom3()
+rnd.SetSeed(165786865)
+
+Ntot =  10000
+for i in range(0, Ntot, 1): #i++
+    #p(t) divisa in due naturalmente
+    #processo binomiale, controllo se atomo della sostanza 1 o 2
+    if rnd.Rndm()<0.3:
+        #sono in sostanza 1
+    else:
+        #sono in sostanza 2
+    #estarre tempo di decadimento
