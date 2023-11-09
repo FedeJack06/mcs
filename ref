@@ -1,0 +1,205 @@
+g++ --std=c++11 -o main main.cpp class.cpp $(root-config --cflags --glibs)
+or `root-config --cflags --glibs`
+-------dereference pointer-----------
+
+class *p = new Class();
+p -> method   \
+*p.method     | equivalent
+p[0].method   /
+
+-------costruttori--------------
+//Stesso nome della classe e senza tipo
+//se non messo c'è quello di default senza parametri
+//se non default devo dichiarare anche quello di default altrimenti non va New
+//Assegnazione nel corpo: come un metodo nel file .cpp
+//Assegnazione con lista:
+classe(type param) : m_var(param) {}; //inizializzo variabile privata
+
+classe(type par=0) : m_var(par) {}; //overloading, se non passo par sarà 0
+
+//Costruttore di copia, sempre presente
+//si dichiara automaticamente
+//copia l'oggetto che gli viene passato e ne crea un altro
+classe(const classe &); //dichiarato così
+classe x(y); //copia l'oggetto y in oggetto x
+
+//operatore assegnazione, copia lo stato di un oggetto in un altro
+classe a,b;
+classe c=b;
+a=b;
+
+//utilizzo main
+classe *v = new classe[3]; //3 oggetti della classe creati con costr default
+
+-------distruttori--------------
+classe::~classe(){}
+
+//creato automaticamente, uno per classe
+//agisce su oggetti allocati static quando esco dal suo campo di visib
+
+//agisce su oggetti allocati dinamic quando uso delete
+delete[] v;  clear all dynamic data if var is pointer to array
+delete v;    clear only first cell
+
+------IMPORTNANTE---------------
+//se presenti oggetti/variabili allocate dinamic nella classe
+//esplicitare distruttore, costr copia e assegnazione(=)
+//altrimenti il distr default cancella solo la prima zona di memoria dei *
+//dichiaro distruttore
+classe::~classe(){
+  delete[] var_dinamica;
+}
+
+//dichiaro costruttore copia, altrimenti creo oggetto che punta alla memoria oggetto precedente
+//creo una vera copia e non un riferimento al vecchio oggetto
+clsse::classe(const classe &a) {
+  m_var = a.m_var;          //dimensione allocazione dinamica
+  m_var2 = new type[m_var]  //nuova allocazione
+  for (int i =0; i<m_var; i++)
+    m_var2[i] = a.m_var2[i];	//copio indice per indice l'intera allocazione dinamica  
+}
+
+//dichiaro =
+classe& classe::operator=(const classe &a){
+  if(m_var != a.m_var){
+    cout << "error" <<endl;
+  } else {
+    for (int i=0; i<m_var; i++)
+      m_var2[i] = a.m_var2[i];
+}
+
+-------operator-----------------
+class class::operator+(class var){
+  operation;
+  return result;
+}
+
+a.operator+(var); //in class (method) (binario method su a con param b)
+class operator+(a,var): //out class (external function)  
+
+**devo dichiararle entrambe, magari senza riscrivere roba ma riusando il metodo
+**dicharo funzione nel .cpp
+
+-------cmake-----------
+target: depences //se cambiate dipendenze
+	ricompila
+
+ESEMPIO makefile 
+all: hello
+hello: hello.cpp lib.o
+	g++ -o hello hello.cpp lib.o
+lib.o: lib.cpp
+	g++ -c lib.cpp
+clean:
+	rm ...
+
+--------passaggio di parametri-----------
+NB puntatore -> è un indirizzo di memoria
+   reference -> è un puntatore a indirizzo di memoria; è l'indirizzo dove é memorizzato l'indirizzo della variavile
+             -> non usa l'asterisco anche se è un puntatore
+             -> facilitano le chimate ai puntatori nelle funzioni
+
+---PASSAGGIO PER VALORE
+funz(type variabile){} 
+//passo alla funzione il valore di variabile
+
+---PASSAGGIO PER INDIRIZZO
+funz(type* var){
+  return *var;
+}
+//passo alla funzione l'indirizzo di memoria dove trovo la variabile
+//la variabile può restituire più di un valore
+
+---PASSAGGIO PER RIFERIMENTO
+funz(type &variabile){                                                     
+  return var;
+} 
+//passo alla funzione gli indirizzi di memoria senza esplicitarlo nel corpo 
+//usa meno memoria 
+//posso modificare variabile var che può essre fuori dallo scope della funz o metodo
+
+//NB b.Conj() è temporaneo in memoria, quindi non posso passarlo per referenza
+//referenza occorre che l'argomento sia in memoria, ossia che sia modificabile
+//anche se il metodo non la modifica
+//const risolvo tutto vedi compito 1 complex number
+
+------------ereditarietà-------------------
+INTERNO CLASSE
+--private //accessibile sono ai membri della classe
+--protected //accessibile ai membri classe e classi derivate
+--public //accessibile da tutto il programma
+
+EREDITANDO (is-a)
+class Derivata : public Bse1, protected Base2, private Base3 {}
+
+//classe derivata eredita tutti i dati membro e metodi delle basi
+//classe derivata accede solo ai dati e metodi non privati nella base
+//classe derivata eredita costruttori dalla base dal C++11
+//esempio se Base(); costruttore di class Base:
+class Derivata: public Base{
+  public:
+    using Base::Base;
+}
+//nella classe derivata si può fare overloading di metodi ereditati
+
+//Tipo di derivazione:
+**PUBLIC BASE
+---Base--------------Derivata
+membri public    --> public
+membri protected --> protected
+membri private   --> non accessibili alla Derivata
+
+**PROTECTED BASE
+---Base--------------Derivata
+membri public    --> protected
+membri protected --> protected
+membri private   --> non accessibili alla Derivata
+
+**PRIVATE BASE
+---Base--------------Derivata
+membri public    --> private
+membri protected --> private
+membri private   --> non accessibili alla Derivata
+
+---------------composizione (has-a)----------------
+class B {};
+class A {
+  B b;
+}
+
+//per scegliere criterio Liskov: ogni metodo base deve poter agire su oggetto derivato senza altre info
+//composizione utilizza la classe, non la eredita
+//parto da classe punto2d e classe poligono che usa vector --> 
+//derivo classe triangolo da poligono
+//parto da classe vector --> eredito classe vettore n-dim con somma e molt scalare
+
+--------------metodi virtuali - polimorfismo run-time------------------
+virtual type funcName(param);  //nella classe base
+type funcName(param); //nelle classi derivate
+
+//classe derivata può ridefinirla ma è diverso dalla riferinizione metodi classici
+classBase *oggetto //se utilizzo un puntatore alla classe base
+p = new Der1; 
+p = new Der2;
+
+p->funcName(); //metodo su puntatore della classe base che punta a oggetto classe derivata
+//metodo agisce su oggetto classe derivara e non su ogg classe base
+//ciò non succede senza virtual
+//rinvio all'esecuzione la decisione di che metodo usare
+
+--------------metodi const-----------------
+void FunzMembro() const; //dichiarazione
+void Class::FunzMembro() const {} //definizione
+
+//metodo non può modificare l'oggetto su cui viene chiamata
+//metodo const non può utilizzare metodi non const, anche se non cambiano ogg
+//su oggetto const posso usare solo metodi const (passaggio ref const al metodo)
+
+??????????????????????????????????????
+1) differenze type& var e type &var nei parametri funzione
+2) chiarire uso di using nelle classi --> per ora solo per dichiarare costrutt derivato
+3) why a = b.Conj()*b ok        a=b*b.Conj() error sembra prendere ogg*double non ogg*ogg
+se conj() const ok entrmabi
+4) giusto che su oggetti const posso agire solo metodi const
+metodi const possono usare della definizione solo altri metodi const
+5) quando obbligatorio cost (es in un getters)
