@@ -1,0 +1,19 @@
+{
+/* rilevatore di lato l a distanza d dalla sorgente emettitrice (uniforme)
+   calcolare la frazione di potenza rilevata
+   se l piccolo rispetto d la frazione è ben approssimata da sup_quadrato/sup_sfera
+   altrimento integro l'angolo solido
+Con Monte Carlo conto particelle emesse e rilevate*/
+
+  TRandom3 rnd;
+  rnd.SetSeed(175976946);
+
+  int Ntot= 10000;
+
+  for (int i=0; i<Ntot; i++){
+    double phi = 2*Math::Pi()*rnd.Rndm();
+    double theta = 
+  }
+
+
+}

@@ -119,7 +119,7 @@ def findAllE(energiamax,step,tol):
     return energie
 
 print("Calcolo spettro dell'energia...")
-print("Energie: ", findAllE(4.55, 0.1, 1e-5));                  #spettro dell'energia
+print("Energie: ", findAllE(3, 0.1, 1e-5));                  #spettro dell'energia
 
 #############################NORMALIZZAZIONE
 #funzione d'onda come array y = psi, x = xi, dimensione n
