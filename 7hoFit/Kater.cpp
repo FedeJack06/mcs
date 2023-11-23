@@ -24,6 +24,20 @@ TF1 *f2;
 
 void chi2(int &npar, double *gin, double &f, double *par, int iflag){
   f=0;
+  f1->SetParameter(0,par[0]);
+  f1->SetParameter(1,par[1]);//f1 e f2 stessa intersezione
+  f1->SetParameter(2,par[2]);
+  f2->SetParameter(0,par[0]);
+  f2->SetParameter(1,par[1]);
+  f2->SetParameter(2,par[4]);
+
+  f1->SetParameter(3,par[3]);
+  f2->SetParameter(3,par[5]);
+
+  for (int i=0; i<data::x1.size(); i++)
+    f += pow(data::t1[i]-f1->Eval(data::x1[i]),2)/pow(data::et1[i],2);
+  for (int i=0; i<data::x2.size(); i++)
+    f += pow(data::t2[i]-f2->Eval(data::x2[i]),2)/pow(data::et2[i],2);
 }
 
 
@@ -66,7 +80,20 @@ int main(){
   app.Run(true);
 
   // Minuit
+  TMinuit mn(6);
+  mn.SetFCN(chi2);
+  mn.DefineParameter(0, "x0", 35, 0.01, 0.0, 0.0);
+  mn.DefineParameter(1, "T0", 4, 0.01, 0.0, 0.0);
+  mn.DefineParameter(2, "a1", f1->GetParameter(2), 0.01, 0.0, 0.0);
+  mn.DefineParameter(3, "b1", f1->GetParameter(3), 0.01, 0.0, 0.0);
+  mn.DefineParameter(4, "a2", f2->GetParameter(2), 0.01, 0.0, 0.0);
+  mn.DefineParameter(5, "b2", f2->GetParameter(3), 0.01, 0.0, 0.0);
 
+  mn.Migrad();
+  double pout[6];
+  /*for (int i=0; i<6; i++)
+    mn.GetParameter(i,pout[i]);*/
+  
   app.Run(true);
 
   return 0;
