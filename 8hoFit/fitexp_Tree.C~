@@ -36,7 +36,6 @@ void fitexp(){
   // Disegno della funzione
   //fisso valore tau
   fe->SetParameter(1, tau);
-  //cambiare la normalizzazione altrimenti incoerenti con l'istogramma
   fe->SetParameter(0, h->GetEntries()*h->GetBinWidth(1));
   fe->Draw("same");
 }
