@@ -26,6 +26,10 @@ m.print_level = 3
 m.migrad()       
 
 tau = m.values[0]
+etau = m.errors[0]
+print(tau)
+print(etau)
+
 h.Draw("E")
 
 # Disegno del fit
@@ -36,3 +40,15 @@ f.Draw("SAME")
 
 gApplication.Run(True)
 
+f2 = TF1("f2","[0]*1/[1]*exp(-x/[1])",0,20)
+f2.SetLineColor(4)
+f2.FixParameter(0,1.)
+f2.SetParameter(1,2.)
+
+#uso metodo fit dell'isto
+h.Fit("f2", "0MULTI") #0 per disegnare
+
+f2.SetParameter(0, h.GetEntries()*h.GetBinWidth(1))
+f2.Draw("SAME")
+
+gApplication.Run(True)
