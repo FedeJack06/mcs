@@ -3,6 +3,7 @@
 import sys,serial
 from dmm import *
 from ps  import *
+import matplotlib.pyplot as plt
 
 #Pilotaggio power supply
 #Inizializzazione
