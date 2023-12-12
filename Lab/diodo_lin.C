@@ -1,5 +1,6 @@
 {
   ifstream infile("uv.dat");
+  int index = 4;
   double v,ev,v_gen,tmp;
   TGraphErrors *gr = new TGraphErrors;
   int i = 0;
@@ -26,12 +27,16 @@
   cout << "v (i<5mA) " << v_lin_start << endl;
   cout << "v': " << x << " +- " << ex << " V" << endl;
 
-  ofstream ofile("v_freq.dat", std::ios_base::app);
-  ofile << x << " " << ex << " " << endl;
+  double c = 299792458;
+  double lamb[5] = {624e-9, 467e-9, 590e-9, 520e-9, 405e-9};
+  double freq = c/lamb[index];
+  double efreq = (freq*10e-9)/lamb[index];
+    
+  //ofstream ofile("v_f_5mA.dat", std::ios_base::app);
+  //ofile << x << " " << ex << " " << freq << " " << efreq << endl;
 }
-
 //uv 3, 4
 //green 2.2, 4
 //yellow 1.9, 4
 //blue 2.5, 4
-//red 1.75, 4
+//red 1.75, 4   lambda 624e-9
