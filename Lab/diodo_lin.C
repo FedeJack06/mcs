@@ -1,6 +1,7 @@
 {
+  //0 IR// 1 RED// 2 YELLOW// 3 GREEN// 4 BLUE// 5 UV //INDEX
   ifstream infile("uv.dat");
-  int index = 4;
+  int index = 5;
   double v,ev,v_gen,tmp;
   TGraphErrors *gr = new TGraphErrors;
   int i = 0;
@@ -11,7 +12,7 @@
     gr->SetPointError(i, ev, eVgen);
     i++;
     
-    if (v_gen/988. < 5e-3) //soglia comune per calcolo fit lineare
+    if (v_gen/988. < 3e-3) //soglia comune per calcolo fit lineare
       v_lin_start = v;
   }
   gr->Draw("AP");
@@ -28,15 +29,11 @@
   cout << "v': " << x << " +- " << ex << " V" << endl;
 
   double c = 299792458;
-  double lamb[5] = {624e-9, 467e-9, 590e-9, 520e-9, 405e-9};
+  double lamb[6] = {883e-9, 633e-9, 589e-9, 534e-9, 473e-9, 382e-9};
+  double eLamb[6] = {12e-9, 9e-9, 6e-9, 13e-9, 13e-9, 6e-9};
   double freq = c/lamb[index];
-  double efreq = (freq*10e-9)/lamb[index];
+  double efreq = (freq*eLamb[index])/lamb[index];
     
-  //ofstream ofile("v_f_5mA.dat", std::ios_base::app);
-  //ofile << x << " " << ex << " " << freq << " " << efreq << endl;
+  ofstream ofile("3mA_v_f.dat", std::ios_base::app);
+  ofile << x << " " << ex << " " << freq << " " << efreq << endl;
 }
-//uv 3, 4
-//green 2.2, 4
-//yellow 1.9, 4
-//blue 2.5, 4
-//red 1.75, 4   lambda 624e-9
