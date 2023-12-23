@@ -15,6 +15,9 @@
     if (v_gen/988. < 3e-3) //soglia comune per calcolo fit lineare
       v_lin_start = v;
   }
+  gr->SetTitle("Grafico Tensione-Corrente diodo LED");
+  gr->GetXaxis()->SetTitle("Tensione sul diodo [V]");
+  gr->GetYaxis()->SetTitle("Tensione generata [V]");
   gr->Draw("AP");
 
   TF1 *f1 = new TF1("f1","[0]+[1]*x", v_lin_start, 4);
@@ -34,6 +37,6 @@
   double freq = c/lamb[index];
   double efreq = (freq*eLamb[index])/lamb[index];
     
-  ofstream ofile("3mA_v_f.dat", std::ios_base::app);
-  ofile << x << " " << ex << " " << freq << " " << efreq << endl;
+  #ofstream ofile("3mA_v_f.dat", std::ios_base::app);
+  #ofile << x << " " << ex << " " << freq << " " << efreq << endl;
 }

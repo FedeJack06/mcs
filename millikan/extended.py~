@@ -1,0 +1,12 @@
+from ROOT import *
+from imiuit import Minuit
+import numpy as np
+from math import *
+
+h = TH1D("h", "", 50, 0, 7)
+for line in open("millikan.dat"):
+    h.Fill(float(line))
+
+h.Draw("E")
+
+f = TF1("f", "", 0, 7)

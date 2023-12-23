@@ -1,5 +1,5 @@
 {
-  ifstream infile("3mA_v_f.dat");
+  ifstream infile("3mA");
   double vd, freq, evd, efreq;
   TGraphErrors *gr = new TGraphErrors;
   int i = 0;
@@ -11,6 +11,9 @@
       //}
   }
   gStyle->SetOptFit();
+  gr->SetTitle("Frequenza LED vs Tensione di soglia");
+  gr->GetXaxis()->SetTitle("Tensione di soglia [V]");
+  gr->GetYaxis()->SetTitle("Frequenza emessa [Hz]");
   gr->Draw("AP");
   TF1 *f1 = new TF1("f1","[0]+[1]*x", 0, 10);
   //f1->SetParameter(1, 2e14);
