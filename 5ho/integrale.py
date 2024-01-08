@@ -10,8 +10,8 @@ Ntot=4000000 #errore come rad(conteggio) aumento fattore 4, errore si dimezza
 Nacc = 0
 Nacc_sph = 0
 for i in range(Ntot):
-    x = (2*rnd.Rndm()-1)*R
-    y = (2*rnd.Rndm()-1)*R
+    x = (2*rnd.Rndm()-1)*R #cerco punti casuali fuori dalla sfera
+    y = (2*rnd.Rndm()-1)*R #punti casuali generati fra 1 e 2
     z = (2*rnd.Rndm()-1)*R
     r = math.sqrt(x*x+y*y+z*z)
     rcl = math.sqrt(x*x+y*y)
