@@ -521,3 +521,147 @@ void fitexp_Tree(){
   fe->Draw("same");
 }
 
+////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////// ES 4 ESAMI
+//altro modo di farlo senza usare tminuit ma solo likelihood
+//non funziona, in questo caso andava meglio l'altro
+{
+  TH1D *h=new TH1D("h","",25,0.,0.);
+
+  ifstream ifile("DatiGamma.dat");
+  
+  double a;
+  while(ifile>>x){
+    h->Fill(a);
+  }
+
+  h->Draw();
+
+  TF1 *f=new TF1("f","[1]*((pow(x,2)*exp(-x/[0]))/(2*pow([0],3)))",0,30);
+  f->FixParameter(1,224);
+  f->FixParameter(0,pow(5.74,1/3));
+  
+  f->SetParameter(1,h->GetBinWidth(1)*h->GetEntries());
+  
+  h->Fit("f","L");
+
+
+  cout<<f->GetParameter(0)<<endl;
+
+}
+/////////// CON PYTHON
+from ROOT import*
+
+x=0
+
+file = open("DatiGamma.dat","r")
+
+h= TH1D("h","titolo",40,0.,0.)
+
+for x in file:
+    h.Fill(float(x))
+
+h.Draw()
+
+#t=TTree()
+#t.ReadFile("DatiGamma.dat","t/D")
+
+
+f=TF1("f","[0]*((x**2*exp(-x/[1]))/2*[1]**3)",0.,0.)
+
+f.SetParameter(0,1)
+f.SetParameter(1,5.74/3)
+
+#t.UnbinnedFit("f","t")
+
+h.Fit("f","L")
+
+print("theta ",f.GetParameter(1),"p-value ",f.GetProb())
+
+    
+gApplication.Run(True)
+
+/////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////// ES 7 fatto in due modi (da verificare)
+import numpy as np
+import math as m
+
+from ROOT import *
+
+rnd = TRandom3()
+
+rnd.SetSeed(123456789)
+
+x_0 = 10
+sigma = 2
+delta = 2
+
+error = m.sqrt(sigma*sigma +delta*delta/3)
+
+h = TH1D("h","",30,0.,0.)
+
+for i in range(0,1000):
+    #genero prima x' ed attorno costruisco una gaussiana per x
+    x_primo = rnd.Gaus(10,2)
+
+    #genero e poi prendo solo i punti che mi interessano spostando la distribuzione
+    x = 2*delta*rnd.Rndm() + (x_primo - delta)
+    
+    h.Fill(x)
+
+h.Draw()
+
+f =TF1("f","[0]*TMath::Gaus(x,[1],[2])",0.,0.);
+f.FixParameter(1,x_0)
+f.FixParameter(2,error)
+
+h.Fit("f","LL")
+print("p-value ",f.GetProb())
+
+gApplication.Run(True)
+
+
+
+#viene p value 0.34 quindi 34% probabilita di ottenere dati peggiori dei miei
+#il che è abbastanza alto (sarebbe al massimo opportuno ottenere 5%)
+
+/////////////METODO 2
+
+from ROOT import *
+import math as m
+
+N=1000
+rnd=TRandom3()
+rnd.SetSeed(123456789)
+
+h=TH1D("h","titolo",40,0.,0.)
+
+x0=10
+sigma=2
+delta=2
+error= m.sqrt(sigma**2+(delta**2)/3)
+
+for i in range(0,N):
+    x_primo=rnd.Gaus(x0,sigma)
+
+    x= (rnd.Rndm())*delta + x_primo
+
+    h.Fill(x)
+
+h.Draw()
+
+f=TF1("f","[0]*TMath::Gaus(x,[1],[2])",0.,0.)
+f.SetParameter(0,1)
+f.SetParameter(1,x0)
+f.SetParameter(2,error)
+
+h.Fit("f","L")
+
+print("p-value ",f.GetProb())
+
+gApplication.Run(True)
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////
+
+
