@@ -1,0 +1,13 @@
+v_gen da 1.1 a 22/23 oltre ci sono distorsioni
+
+SetParameter fit e/h è ok?
+
+Metodo soglia per range della linearizz ok?
+
+Chiedere freq infrarosso led
+
+
+FIT soglia 3mA soglia 5mA: (manca led infrarosso)
+errore statistico sulle lungh onda 9e-9 m
+errore freq propagato stat da c e lamb, c senza errore
+errore vd propagato statisticamente da q/m retta

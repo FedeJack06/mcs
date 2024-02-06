@@ -1,0 +1,13 @@
+{
+  auto c = new TCanvas("c","", 1000, 1000 ,1000 ,1000);
+  auto gr = new TGraph();
+  gr->SetMarkerStyle(20);
+  c->cd(1);
+  for(int i=0 ; i<100; i++){
+    gr->SetPoint(gr->GetN(), i+1, i-1);
+    if (i==0) gr->Draw("AP");
+    gPad->Modified();
+    gPad->Update();
+    gSystem->ProcessEvents();
+  }
+}

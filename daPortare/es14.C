@@ -16,8 +16,8 @@
     for(int i=0;i<nobs;i++){
       prob= prob + TMath::PoissonI(i,m+ns);
       if(prob<0.025){
-	cout<<"upper limit al 95% "<<ns-1<<endl;
-	break;
+	      cout<<"upper limit al 95% "<<ns-1<<endl;
+	      break;
       }
     }
     ns++;
@@ -28,8 +28,8 @@
     for(int i=0;i<nobs;i++){
       prob= prob + TMath::PoissonI(i,m+ns);
       if(1-prob>0.025){
-	cout<<"lower limit al 95% "<<ns-1<<endl;
-	break;
+        cout<<"lower limit al 95% "<<ns-1<<endl;
+        break;
       }
     }
     ns++;
