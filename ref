@@ -112,19 +112,22 @@ REFERENCE -> nome alternativo di una variabile
 
 ---PASSAGGIO PER VALORE
 funz(type variabile){} 
-//passo alla funzione il valore di variabile
+//passo alla funzione il valore di variabile per copia
 
 ---PASSAGGIO PER INDIRIZZO
-funz(type* var){
-  return *var;
+funz(type* punt){
+  return *punt;
 }
-//passo alla funzione l'indirizzo di memoria dove trovo la variabile
-//la variabile può restituire più di un valore
+//passo alla funzione un puntatore all'indirizzo di memoria dove trovo la variabile
+//(passo alla funz un indirizzo di variabile)
+//utilizzo nel corpo *var che ritorna il valore a cui punta il puntatore
+//la variabile può restituire più di un valore (array, matrici con doppio puntatore**)
 
 ---PASSAGGIO PER RIFERIMENTO
 funz(type &variabile){                                                     
   return var;
-} 
+}
+//passo alla funzione il riferimento (secondo nome della variabile)
 //passo alla funzione gli indirizzi di memoria senza esplicitarlo nel corpo 
 //usa meno memoria 
 //posso modificare variabile var che può essre fuori dallo scope della funz o metodo
