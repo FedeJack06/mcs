@@ -94,10 +94,21 @@ clean:
 	rm ...
 
 --------passaggio di parametri-----------
-NB puntatore -> è un indirizzo di memoria
-   reference -> è un puntatore a indirizzo di memoria; è l'indirizzo dove é memorizzato l'indirizzo della variavile
-             -> non usa l'asterisco anche se è un puntatore
-             -> facilitano le chimate ai puntatori nelle funzioni
+PUNTATORE -> contiene l'indirizzo di memoria di una variabile
+          -> dichiara con * fra tipo e nome
+          -> ha lo stesso tipo della variabile di riferimento
+  &var             //restituisce l'indirizzo di memoria di var
+  int* p = &var;   //usato per inizializzare puntatore
+  *p               //restituisce valore a cui punta, quindi il contenuto di var
+
+REFERENCE -> nome alternativo di una variabile
+          -> utili per passare parametri a funzioni in modo più semplice dei puntatori
+          -> si dichiara con & fra tipo (stesso della var) e nome
+          -> deve essere dichiarata E inizializzata
+          -> si usano come variabili normali
+  int& r = var;   //inizializzazione
+  r = 4;          //cambia valore a var, come se fosse una variabile
+  &r              //ritorna indirizzo di r che è lo stesso indirizzo di var
 
 ---PASSAGGIO PER VALORE
 funz(type variabile){} 

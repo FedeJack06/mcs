@@ -1,5 +1,0 @@
-    1) Implementate un metodo simplettico (Verlet-Velocity) e confrontate i risultati con quelli ottenuti con Runge-Kutta 2 (ad esempio in termini di momento angolare)
-    2) Implementate Runge-Kutta al quarto ordine e studiate il moto di un elettrone in campo magnetico ed elettrico. È utile che sia il campo magnetico che quello elettrico siano descritti da una funzione del tipo Vector f(Vector), in modo da poter implementare campi non uniformi. Nel file fb.h è descritto il campo magnetico che realizza una bottiglia magnetica (si usino velocità dell'ordine di qualche 10^6 m/s)
-    3) Come 2 ma sfruttate Runge-Kutta 2 (che avete già) implementando però un integratore relativistico (basato su x e p)
-
-
